@@ -10,7 +10,7 @@
 
 /**
  * This sample shows how to create a Lambda function for handling Alexa Skill requests that:
- * - Web service: communicate with an external web service to get tide data from NOAA CO-OPS API (http://tidesandcurrents.noaa.gov/api/)
+ * - Web service: communicate with an external web service to get tide data from NOAA CO-OPS API (https://tidesandcurrents.noaa.gov/api/)
  * - Multiple optional slots: has 2 slots (city and date), where the user can provide 0, 1, or 2 values, and assumes defaults for the unprovided values
  * - DATE slot: demonstrates date handling and formatted date responses appropriate for speech
  * - Custom slot type: demonstrates using custom slot types to handle a finite set of known values
@@ -39,7 +39,7 @@
  */
 var APP_ID = undefined;//replace with 'amzn1.echo-sdk-ams.app.[your-unique-value-here]';
 
-var http = require('http'),
+var https = require('https'),
     alexaDateUtil = require('./alexaDateUtil');
 
 /**
@@ -335,18 +335,18 @@ function getFinalTideResponse(cityStation, date, response) {
 }
 
 /**
- * Uses NOAA.gov API, documented: http://tidesandcurrents.noaa.gov/api/
- * Results can be verified at: http://tidesandcurrents.noaa.gov/noaatidepredictions/NOAATidesFacade.jsp?Stationid=[id]
+ * Uses NOAA.gov API, documented: https://tidesandcurrents.noaa.gov/api/
+ * Results can be verified at: https://tidesandcurrents.noaa.gov/noaatidepredictions/NOAATidesFacade.jsp?Stationid=[id]
  */
 function makeTideRequest(station, date, tideResponseCallback) {
 
     var datum = "MLLW";
-    var endpoint = 'http://tidesandcurrents.noaa.gov/api/datagetter';
+    var endpoint = 'https://tidesandcurrents.noaa.gov/api/datagetter';
     var queryString = '?' + date.requestDateParam;
     queryString += '&station=' + station;
     queryString += '&product=predictions&datum=' + datum + '&units=english&time_zone=lst_ldt&format=json';
 
-    http.get(endpoint + queryString, function (res) {
+    https.get(endpoint + queryString, function (res) {
         var noaaResponseString = '';
         console.log('Status Code: ' + res.statusCode);
 
